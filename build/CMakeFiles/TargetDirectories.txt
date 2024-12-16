@@ -1,0 +1,3 @@
+/home/dhys/SDL/project/build/CMakeFiles/game.dir
+/home/dhys/SDL/project/build/CMakeFiles/edit_cache.dir
+/home/dhys/SDL/project/build/CMakeFiles/rebuild_cache.dir
