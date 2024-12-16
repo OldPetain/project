@@ -15,8 +15,4 @@ void updateEnemies(Enemy enemies[],Player* player, Bullet bullets[], int max_bul
 // 碰撞检测
 bool checkCollision(SDL_Rect* a, SDL_Rect* b);
 
-void handleEnemyHit(Enemy enemies[], int enemy_index);
-
-bool checkBulletCollision(SDL_Rect* bullet_rect, SDL_Rect* enemy_rect,Enemy enemies[],int i);
-
 #endif

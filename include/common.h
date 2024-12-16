@@ -29,8 +29,6 @@ typedef struct {
     SDL_Rect rect;  // 敌人矩形
     int dx, dy;     // 敌人速度
     bool active;    // 敌人是否活动
-    bool hit; // 新增字段，记录敌人是否被击中
-    int original_x; // 新增字段，记录敌人在地图上的原始位置
     int direction;  // 敌人方向
 } Enemy;
 

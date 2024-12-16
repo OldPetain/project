@@ -64,13 +64,6 @@ void updateBullets(Bullet bullets[], int max_bullets, Player* player, Enemy enem
             bullets[i].rect.x += bullets[i].dx;
             bullets[i].rect.y += bullets[i].dy;
 
-            // 检查子弹是否击中敌人
-            for (int j = 0; j < max_enemies; j++) {
-                if (enemies[j].active && checkBulletCollision(&bullets[i].rect, &enemies[j].rect)) {
-                    bullets[i].active = false; // 子弹被击中后不再活动
-                }
-            }
-
             // 子弹超出屏幕范围后失效
             if (bullets[i].rect.y < 0 || bullets[i].rect.y > SCREEN_HEIGHT ||
                 bullets[i].rect.x < 0 || bullets[i].rect.x > SCREEN_WIDTH) {
@@ -78,8 +71,7 @@ void updateBullets(Bullet bullets[], int max_bullets, Player* player, Enemy enem
             }
 
             // 碰撞检测（对玩家或敌人）
-            // 1. 玩家子弹击中敌人
-            /*
+            // 1. 玩家子弹击中敌人           
             for (int j = 0; j < max_enemies; j++) {
                 if (checkCollision(&bullets[i].rect, &enemies[j].rect)) {
                     bullets[i].active = false;
@@ -87,7 +79,7 @@ void updateBullets(Bullet bullets[], int max_bullets, Player* player, Enemy enem
                     break;
                 }
             }
-            */
+
             // 2. 敌人子弹击中玩家
             if (checkCollision(&bullets[i].rect, &player->rect)) {
                 bullets[i].active = false;
@@ -97,12 +89,10 @@ void updateBullets(Bullet bullets[], int max_bullets, Player* player, Enemy enem
     }
 }
 
-// 检测子弹是否碰撞目标
+// 检测子弹是否与目标矩形碰撞
 bool checkBulletCollision(SDL_Rect* bulletRect, SDL_Rect* targetRect) {
-    if (bulletRect->x < targetRect->x + targetRect->w &&
-        bulletRect->x + bulletRect->w > targetRect->x &&
-        bulletRect->y < targetRect->y + targetRect->h &&
-        bulletRect->y + bulletRect->h > targetRect->y) {
+    if (bulletRect->x < targetRect->x + targetRect->w && bulletRect->x + bulletRect->w > targetRect->x &&
+        bulletRect->y < targetRect->y + targetRect->h && bulletRect->y + bulletRect->h > targetRect->y) {
         return true;
     }
     return false;
