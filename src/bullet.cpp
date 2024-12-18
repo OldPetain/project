@@ -73,9 +73,14 @@ void updateBullets(Bullet bullets[], int max_bullets, Player* player, Enemy enem
             // 碰撞检测（对玩家或敌人）
             // 1. 玩家子弹击中敌人           
             for (int j = 0; j < max_enemies; j++) {
-                if (checkCollision(&bullets[i].rect, &enemies[j].rect)) {
-                    bullets[i].active = false;
-                    enemies[j].active = false; // 简单处理：敌人消失
+                if (enemies[j].active && checkCollision(&bullets[i].rect, &enemies[j].rect)) {
+                    bullets[i].active = false; // 子弹消失
+                    enemies[j].dying = true;   // 标记敌人正在消失
+                    enemies[j].deathTimer = 300; // 计时器，30帧后敌人消失
+                    enemies[j].rect.x = SCREEN_WIDTH + (j+1)*200; // 在屏幕外预设敌人位置(x轴)
+                    enemies[j].rect.y = SCREEN_HEIGHT * (j+1)/10 ; // 在屏幕外预设敌人位置(y轴)
+                    enemies[j].dx = 0;
+                    enemies[j].dy = 0;
                     break;
                 }
             }

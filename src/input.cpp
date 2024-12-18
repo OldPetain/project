@@ -18,11 +18,22 @@ bool handleInput(Player* player, Enemy enemies[]) {
             // 按键按下
             switch (event.key.keysym.scancode) {
                 case SDL_SCANCODE_W:
+                    if(player -> direction == 6){
+                        player->state = STAND_UP_LEFT;
+                    }
+                    else {
+                        if(player -> direction == 2){
+                            player->state = STAND_UP_RIGHT;
+                        }
+                    }
+                    player->frameCount = 1;  // 假设站立有1帧
                     player->direction = 0;//面向上
                     //player->dy = -player->speed;
                     break;
                 case SDL_SCANCODE_A:
                     player->direction = 6;//面向左
+                    player->state = WALK_LEFT; // 设置为向左跑动状态
+                    player->frameCount = 5;  // 假设跑动有5帧
                     if(player->rect.x > MAP_EDGE_WIDTH){
                         player->dx = -player->speed;
                     }
@@ -48,7 +59,9 @@ bool handleInput(Player* player, Enemy enemies[]) {
                     //player->dy = player->speed;
                     break;
                 case SDL_SCANCODE_D:
+                    player->state = WALK_RIGHT; // 设置为向右跑动状态
                     player->direction = 2;//面向右
+                    player->frameCount = 5;  // 假设跑动有5帧
                     if(player->rect.x +player->rect.w < SCREEN_WIDTH - MAP_EDGE_WIDTH){
                         player->dx = player->speed;
                     }
@@ -74,21 +87,41 @@ bool handleInput(Player* player, Enemy enemies[]) {
                     break;
                 case SDL_SCANCODE_J:
                     player->shooting = true;
-                    firePlayerBullet(player, playerBullets, MAX_BULLETS);
+                    firePlayerBullet(player, playerBullets, MAX_BULLETS);//???
                     break;
-                default:
+                default:    
                     break;
             }
         } else if (event.type == SDL_KEYUP) {
             // 按键释放
             switch (event.key.keysym.scancode) {
                 case SDL_SCANCODE_W:
+                    if(player->state == STAND_UP_LEFT){
+                        player->direction = 6;//面向左
+                    }
+                    else {
+                        if(player->state == STAND_UP_RIGHT){
+                            player->direction = 2;//面向右
+                        }
+                    }
+                    player->dy = 0;//???
+                    break;
                 case SDL_SCANCODE_S:
-                    player->dy = 0;
+                    player->dy = 0;//???
                     break;
                 case SDL_SCANCODE_A:
-                case SDL_SCANCODE_D:
+                    player->state = STAND_LEFT;//面向左
+                    player->frame = 0; // 重置动画帧索引
+                    player->frameCount = 1;  // 假设站立有1帧
                     player->dx = 0;
+                    break;
+                case SDL_SCANCODE_D:
+                    player->state = STAND_RIGHT; // 面向右
+                    player->frame = 0; // 重置动画帧索引
+                    player->frameCount = 1;  // 假设站立有1帧
+                    player->dx = 0;
+                    break;
+                case SDL_SCANCODE_SPACE:
                     break;
                 case SDL_SCANCODE_J:
                     player->shooting = false;//???

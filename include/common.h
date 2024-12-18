@@ -12,8 +12,10 @@
 
 #define MAX_BULLETS 50  // 最大子弹数
 #define BULLET_SPEED 10  // 子弹速度
-#define PLAYER_JUMP_SPEED 60   // 玩家跳跃速度
+#define PLAYER_JUMP_SPEED 140   // 玩家跳跃速度
 #define PLAYER_GRAVITY 15   // 玩家重力加速度
+
+typedef enum { STAND_LEFT, STAND_RIGHT, WALK_LEFT, WALK_RIGHT,  JUMP_LEFT, JUMP_RIGHT, STAND_UP_RIGHT, STAND_UP_LEFT} AnimationState;
 
 typedef struct {
     SDL_Rect rect;   // 玩家矩形
@@ -23,6 +25,15 @@ typedef struct {
     int lives;       // 玩家生命数
     bool jumping;    // 是否跳跃
     int direction;   // 玩家方向
+    // 以下为动画相关
+    int frame;            // 当前动画帧索引
+    int frameCount;       // 当前动作的总帧数
+    int frameWidth;       // 单个动画帧的宽度
+    int frameHeight;      // 单个动画帧的高度
+    int animationSpeed;   // 动画切换速度（帧计数）
+    int frameTimer;       // 帧计时器
+    SDL_Texture* texture; // 精灵图纹理
+    AnimationState state; // 当前动画状态（站立、跑动、跳跃等）
 } Player;
 
 typedef struct {
@@ -30,6 +41,8 @@ typedef struct {
     int dx, dy;     // 敌人速度
     bool active;    // 敌人是否活动
     int direction;  // 敌人方向
+    bool dying;      // 敌人是否正在消失
+    int deathTimer;  // 死亡动画计时器
 } Enemy;
 
 typedef struct {
@@ -38,9 +51,9 @@ typedef struct {
     bool active;    // 子弹是否激活
 } Bullet;
 
-
 // 声明全局变量
 extern SDL_Rect SourceRect;
+extern SDL_Renderer* renderer;
 extern Bullet playerBullets[];//玩家子弹
 extern Bullet enemyBullets[];//敌人子弹
 

@@ -1,23 +1,47 @@
 #include "../include/player.h"
 #include "../include/bullet.h"
+#include <SDL2/SDL_image.h>
 
-void initPlayer(Player* player) {
+void initPlayer(SDL_Renderer* renderer,Player* player) {
+    // 初始化玩家矩形和生命值
     player->rect.x = SCREEN_WIDTH / 2 - 100;
     player->rect.y = SCREEN_HEIGHT / 2 - 60;
-    player->rect.w = 18;
-    player->rect.h = 30;
+    player->rect.w = 100;
+    player->rect.h = 100;
+    player->lives = 30;
+    
+    // 初始化玩家移动方向
     player->dx = 0;
     player->dy = 0;
     player->speed = 5;
-    player->shooting = false;
-    player->lives = 30;
-    player->jumping = false;
     player->direction = 2; // 0:向上，1：向右上 2:向右 3：向右下 4：向下 5：向左下 6：向左 7：向左上
+    
+    // 初始化玩家状态
+    player->shooting = false;
+    player->jumping = false;
+
+    // 初始化玩家动画
+    player->texture = IMG_LoadTexture(renderer, "../assets/player.png"); // 加载精灵图
+    player->frame = 0;          // 初始帧索引
+    player->frameCount = 1;     // 当前动画帧数 (例如站立动画)
+    player->frameWidth = 150;    // 单帧宽度
+    player->frameHeight = 150;   // 单帧高度
+    player->animationSpeed = 3; // 每3帧切换动画
+    player->frameTimer = 0;     // 初始化帧计时器
+    player->state = STAND_RIGHT; // 初始状态为站立
 }
 
 void updatePlayer(Player* player, Bullet bullets[], int max_bullets) {
+    player->frameTimer++;
+    if (player->frameTimer >= player->animationSpeed) {
+        // 切换下一帧
+        player->frame = (player->frame + 1) % player->frameCount;//!?
+        player->frameTimer = 0; // 重置帧计时器
+    }
+
     // 跳跃逻辑
     if (player->jumping) {
+        //播放跳跃动画
         player->rect.y -= PLAYER_JUMP_SPEED;
         player->jumping = false;
     } else {
@@ -27,6 +51,8 @@ void updatePlayer(Player* player, Bullet bullets[], int max_bullets) {
         }
     }
     // 更新玩家位置
+    //播放人物移动动画：dx+ -->; dx- <--
+
     player->rect.x += player->dx;
 
 

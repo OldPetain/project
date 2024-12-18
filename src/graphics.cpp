@@ -6,7 +6,6 @@
 #include "../include/common.h"
 #include "../include/bullet.h"
 
-
 // 全局变量
 SDL_Window* win = NULL;
 SDL_Renderer* renderer = NULL;
@@ -68,15 +67,24 @@ void render(Player* player, Enemy enemies[]){
     //渲染背景
     SDL_RenderCopy(renderer, backgroundTexture, &SourceRect, &DestRect);
 
-    // 绘制玩家(红色)
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // 红色
-    SDL_RenderFillRect(renderer, &(player->rect));
+    // 绘制玩家
+    SDL_Rect srcRect = {
+        player->frame * player->frameWidth,  // 源X位置，根据当前帧计算
+        player->state * player->frameHeight, // 源Y位置，根据状态计算
+        player->frameWidth,                  // 帧宽度
+        player->frameHeight                  // 帧高度
+    };
+    SDL_RenderCopy(renderer, player->texture, &srcRect, &player->rect);
 
     //绘制敌人（绿色）
-    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);// 普通敌人颜色：绿色
     for(int i = 0; i < MAX_ENEMIES; i++){
         if(enemies[i].active){
+            if (enemies[i].dying) {
+                SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); // 敌人被击中变成蓝色
+            }
             SDL_RenderFillRect(renderer, &(enemies[i].rect));
+            SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255); // 恢复颜色
         }
     }
 

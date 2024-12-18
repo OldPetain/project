@@ -14,6 +14,8 @@ void initEnemies(Enemy enemies[]) {
         enemies[i].dy = 0;
         enemies[i].active = false;
         enemies[i].direction = 0;//敌人方向为0，向左
+        enemies[i].dying = false;//敌人初始化，还没有死亡
+        enemies[i].deathTimer = 300; // 死亡动画计时器
     }
 }
 
@@ -24,16 +26,24 @@ void updateEnemies(Enemy enemies[], Player* player, Bullet bullets[], int max_bu
             enemies[i].active = true;
         }
         if (enemies[i].active) {
-            if (rand() % 100 < 5) { // 随机发射子弹
-                fireEnemyBullet(player, bullets, enemies, i, max_bullets);
-            }
-            if(enemies[i].rect.x > player->rect.x){
-                enemies[i].rect.x += enemies[i].dx;//敌人向左移动
-                enemies[i].direction = 0;//敌人方向为0，向左
-            }
-            else{
-                enemies[i].rect.x -= enemies[i].dx;//敌人向右移动
-                enemies[i].direction = 1;//敌人方向为1，向右
+            if (enemies[i].dying) {
+                enemies[i].deathTimer--;
+                if (enemies[i].deathTimer <= 0) {
+                    enemies[i].active = false; // 敌人彻底消失
+                }
+            } 
+            else {
+                if (rand() % 100 < 5) { // 随机发射子弹
+                    fireEnemyBullet(player, bullets, enemies, i, max_bullets);
+                }
+                if(enemies[i].rect.x > player->rect.x){
+                    enemies[i].rect.x += enemies[i].dx;//敌人向左移动
+                    enemies[i].direction = 0;//敌人方向为0，向左
+                }
+                else{
+                    enemies[i].rect.x -= enemies[i].dx;//敌人向右移动
+                    enemies[i].direction = 1;//敌人方向为1，向右
+                }
             }      
         }
     } 

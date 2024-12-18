@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
 
     // 初始化玩家
     Player player;
-    initPlayer(&player);
+    initPlayer(renderer, &player);
 
     // 初始化敌人
     Enemy enemies[MAX_ENEMIES];
