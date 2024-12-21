@@ -114,9 +114,10 @@ bool loadBackground(const char* imagePath){
 }
     
 
-void closeSDL() {
+void closeSDL(Player* player) {
     // 释放资源
     if (backgroundTexture) SDL_DestroyTexture(backgroundTexture);
+    if (player->texture) SDL_DestroyTexture(player->texture);
     if (renderer) SDL_DestroyRenderer(renderer);
     if (win) SDL_DestroyWindow(win);
     SDL_Quit();

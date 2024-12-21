@@ -16,6 +16,6 @@ void render(Player* player,Enemy enemies[]);
 bool loadBackground(const char* imagePath);
 
 // 清理 SDL
-void closeSDL();
+void closeSDL(Player* player);
 
 #endif

@@ -23,13 +23,14 @@ void initEnemies(Enemy enemies[]) {
 void updateEnemies(Enemy enemies[], Player* player, Bullet bullets[], int max_bullets) { 
     for (int i = 0; i < MAX_ENEMIES; i++) {
         if (enemies[i].rect.x <= SCREEN_WIDTH && enemies[i].rect.x >= 0) { // 如果敌人已经部分进入屏幕，则开始活动
-            enemies[i].active = true;
+            enemies[i].active = true;                
         }
         if (enemies[i].active) {
             if (enemies[i].dying) {
                 enemies[i].deathTimer--;
                 if (enemies[i].deathTimer <= 0) {
                     enemies[i].active = false; // 敌人彻底消失
+                    enemies[i].dying = false; // 敌人死亡状态复位
                 }
             } 
             else {
