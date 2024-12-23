@@ -19,8 +19,8 @@ void initEnemies(Enemy enemies[])
     {
         enemies[i].rect.x = 800 + i * 100;
         enemies[i].rect.y = 100 + i * 50;
-        enemies[i].rect.w = 150;
-        enemies[i].rect.h = 150;
+        enemies[i].rect.w = 115;
+        enemies[i].rect.h = 115;
         enemies[i].dx = -2;
         enemies[i].dy = 0;
         enemies[i].active = false;
