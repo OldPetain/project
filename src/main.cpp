@@ -10,7 +10,7 @@
 #define FR 30        // 帧率
 #define FT 1000 / FR // 帧间隔
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
     if (!initSDL())
     {
@@ -72,7 +72,8 @@ int main(int argc, char* argv[])
                     if (enemies[j].active && checkBulletCollision(&playerBullets[i].rect, &enemies[j].rect))
                     {
                         playerBullets[i].active = false;
-                        enemies[j].active = false; // 击中敌人后消失
+                        // enemies[j].active = false; // 击中敌人后消失
+                        enemies[j].dying = true; // ! 开始倒计时,马上就死咯
                     }
                 }
             }
@@ -92,10 +93,10 @@ int main(int argc, char* argv[])
         }
 
         // 渲染内容
-        render(&player, enemies); //???
+        render(&player, enemies);
         // 绘制子弹
-        renderBullets( playerBullets, MAX_BULLETS, renderer,playerBullets->texture);// !:有问题
-        renderBullets( enemyBullets, MAX_BULLETS, renderer,enemyBullets->texture);// !:有问题
+        renderBullets(playerBullets, MAX_BULLETS, renderer, playerBullets->texture); // !:有问题
+        renderBullets(enemyBullets, MAX_BULLETS, renderer, enemyBullets->texture);   // !:有问题
 
         // 延迟
         end = SDL_GetTicks64();

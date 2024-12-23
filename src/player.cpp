@@ -44,16 +44,18 @@ void updatePlayer(Player *player, Bullet bullets[], int max_bullets)
     }
 
     // 跳跃逻辑
-    if(player->jumping){        //起跳
+    if (player->jumping)
+    { // 起跳
         player->is_jumping = true;
         player->dy = -PLAYER_JUMP_SPEED;
         player->jumping = false;
     }
     // 播放跳跃动画
-    if(player->is_jumping){      //正在腾空                  
+    if (player->is_jumping)
+    { // 正在腾空
         player->dy += PLAYER_GRAVITY;
         if (player->rect.y + player->rect.h > SCREEN_HEIGHT / 2)
-        {                                                        // ？？？
+        {                                                        // !？？？
             player->rect.y = SCREEN_HEIGHT / 2 - player->rect.h; // 落地
             player->dy = 0;
             player->is_jumping = false;
