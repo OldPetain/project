@@ -42,14 +42,14 @@ bool handleInput(Player *player, Enemy enemies[])
     const Uint8 *keyState = SDL_GetKeyboardState(NULL);
 
     // 跳跃逻辑
-    if (keyState[SDL_SCANCODE_SPACE] && !player->is_jumping)//如果按下空格键并且没有在跳跃中
+    if (keyState[SDL_SCANCODE_SPACE] && !player->is_jumping) // 如果按下空格键并且没有在跳跃中
     {
         player->jumping = true;
         setPlayerState(
             player,
             (player->direction == 5 || player->direction == 6 || player->direction == 7) ? 6 : 2,
             (player->direction == 5 || player->direction == 6 || player->direction == 7) ? JUMP_LEFT : JUMP_RIGHT,
-            4, 0, -player->speed);// ?
+            4, 0, -player->speed); // ?
         if (player->state == JUMP_LEFT && keyState[SDL_SCANCODE_A])
         {
             player->dx = -player->speed;
@@ -64,7 +64,7 @@ bool handleInput(Player *player, Enemy enemies[])
     if (keyState[SDL_SCANCODE_J])
     {
         player->shooting = true;
-        //firePlayerBullet(player, playerBullets, MAX_BULLETS);
+        // firePlayerBullet(player, playerBullets, MAX_BULLETS);
     }
     else
     {

@@ -10,7 +10,7 @@
 #define FR 30        // 帧率
 #define FT 1000 / FR // 帧间隔
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
     // 初始化SDL
     if (!initSDL())
@@ -73,7 +73,8 @@ int main(int argc, char* argv[])
                     if (enemies[j].active && checkBulletCollision(&playerBullets[i].rect, &enemies[j].rect))
                     {
                         playerBullets[i].active = false;
-                        enemies[j].active = false; // 击中敌人后消失
+                        // enemies[j].active = false; // 击中敌人后消失
+                        enemies[j].dying = true; // ! 开始倒计时,马上就死咯
                     }
                 }
             }

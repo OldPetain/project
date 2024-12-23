@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/dhys/SDL/project/bin/game"
-  "/home/dhys/SDL/project/bin/game.pdb"
+  "../bin/game"
+  "../bin/game.pdb"
   "CMakeFiles/game.dir/src/bullet.cpp.o"
   "CMakeFiles/game.dir/src/bullet.cpp.o.d"
   "CMakeFiles/game.dir/src/enemy.cpp.o"
