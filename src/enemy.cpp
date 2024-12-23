@@ -37,7 +37,7 @@ void initEnemies(Enemy enemies[])
         enemies[i].animation_speed = 3;
         enemies[i].frame_timer = 0;
 
-        std::cout << "init enemy " << i << "now || size:" << enemies[i].frame_height << "x" << enemies[i].frame_width << std::endl;
+        // std::cout << "init enemy " << i << "now || size:" << enemies[i].frame_height << "x" << enemies[i].frame_width << std::endl;
     }
 }
 
@@ -49,14 +49,14 @@ void updateEnemies(Enemy enemies[], Player *player, Bullet bullets[], int max_bu
         enemies[i].frame_timer++;
         if (enemies[i].frame_timer >= enemies[i].animation_speed)
         {
-            std::cout << "update***enemy* before " << i << " current_frame:" << enemies[i].current_frame << std::endl; // test
-            std::cout << "update***enemy* before " << i << " all frame:" << enemies[i].frame_count << std::endl;       // test
+            // std::cout << "update***enemy* before " << i << " current_frame:" << enemies[i].current_frame << std::endl; // test
+            // std::cout << "update***enemy* before " << i << " all frame:" << enemies[i].frame_count << std::endl;       // test
 
             // 这里没有问题！
             enemies[i].current_frame = (enemies[i].current_frame + 1) % enemies[i].frame_count;
             enemies[i].frame_timer = 0;
 
-            std::cout << "update***enemy* after" << i << " current_frame:" << enemies[i].current_frame << std::endl; // test
+            // std::cout << "update***enemy* after" << i << " current_frame:" << enemies[i].current_frame << std::endl; // test
         }
 
         if (enemies[i].rect.x <= SCREEN_WIDTH && enemies[i].rect.x >= 0)
@@ -65,16 +65,12 @@ void updateEnemies(Enemy enemies[], Player *player, Bullet bullets[], int max_bu
         }
         if (enemies[i].active)
         {
-            bool flag = true;
+
             if (enemies[i].dying)
             {
-                if (flag) // 这里添加了个开关，让下面的只执行一次
-                {
-                    enemies[i].state = enemy_state::ENEMY_DIE;
-                    enemies[i].current_frame = 0;
-                    enemies[i].frame_count = 2;
-                    flag = false;
-                }
+                enemies[i].state = enemy_state::ENEMY_DIE;
+                enemies[i].frame_count = 2;
+
                 enemies[i].deathTimer--;
                 if (enemies[i].deathTimer <= 0)
                 {
@@ -95,7 +91,7 @@ void updateEnemies(Enemy enemies[], Player *player, Bullet bullets[], int max_bu
                     enemies[i].state = enemy_state::RUN_LEFT; // 敌人状态为向左跑
                     enemies[i].frame_count = 4;
                 }
-                else
+                if (enemies[i].rect.x < player->rect.x)
                 {
                     enemies[i].rect.x -= enemies[i].dx;        // 敌人向右移动
                     enemies[i].direction = 1;                  // 敌人方向为1，向右

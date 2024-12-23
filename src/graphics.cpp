@@ -119,7 +119,7 @@ void render(Player *player, Enemy enemies[])
 
             // std::cout << "now enemy img pos is " << enemies[i].current_frame << " and state is " << enemies[i].state << std::endl; // test
             // std::cout << "enemy img size " << enemies[i].frame_width << " " << enemies[i].frame_height << std::endl;               // test
-            std::cout << "enemy state is " << enemies[i].state << std::endl; // test
+            // std::cout << "enemy state is " << enemies[i].state << std::endl; // test
 
             SDL_RenderCopy(renderer, enemies[i].texture, &srcRect2, &enemies[i].rect);
         }
