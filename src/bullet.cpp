@@ -11,15 +11,16 @@ void initBullets(Bullet bullets[])
 {
     for (int i = 0; i < MAX_BULLETS; i++)
     {
-        bullets[i].active = false; // 所有子弹初始未激活
-        // 初始化子弹的图片
-        bullets[i].texture = IMG_LoadTexture(renderer, "../asset/Bullet.png");
-        bullets[i].rect.w = 20;//子弹的宽
-        bullets[i].rect.h = 20;//子弹的高
-        bullets[i].frame = 0;// 当前动画帧
-        bullets[i].frameCount = 1;// 动画帧数
-        bullets[i].animationSpeed = 3;//每3帧切换一次图片
-        bullets[i].frameTimer = 0;// 帧计时器
+        bullets[i].active = false;          // 所有子弹初始未激活
+        bullets[i].source = -1;            // 子弹来源未知
+        bullets[i].dy = 0;                  // 子弹的速度
+        bullets[i].dx = 0;                  // 子弹的速度
+        bullets[i].rect.w = 20;             // 子弹的宽
+        bullets[i].rect.h = 20;             // 子弹的高
+        bullets[i].frame = 0;               // 初始动画帧索引
+        bullets[i].frameCount = 1;          // 动画帧数
+        bullets[i].animationSpeed = 1;      // 每3帧切换一次图片
+        bullets[i].frameTimer = 0;          // 帧计时器
     }
 }
 
@@ -30,8 +31,8 @@ void firePlayerBullet(Player *player, Bullet bullets[], int max_bullets)
     {
         if (!bullets[i].active)
         {
-            bullets[i].active = true;// ？可删去
-            bullets[i].source = 0; // 设置来源为玩家
+            bullets[i].active = true; // ？可删去
+            bullets[i].source = 0;    // 设置来源为玩家
             switch (player->state)
             {
             /*
@@ -54,14 +55,14 @@ void firePlayerBullet(Player *player, Bullet bullets[], int max_bullets)
             case SHOOTING_RUN_LEFT:
                 bullets[i].rect.x = player->rect.x;
                 bullets[i].rect.y = player->rect.y + player->rect.h * 80 / 150;
-                break; 
+                break;
             case STAND_RIGHT:
             case WALK_RIGHT:
             case SHOOTING_RUN_RIGHT:
                 bullets[i].rect.x = player->rect.x + player->rect.w;
                 bullets[i].rect.y = player->rect.y + player->rect.h * 80 / 150;
                 break;
-            case JUMP_LEFT:                
+            case JUMP_LEFT:
             case JUMP_RIGHT:
                 switch (player->direction)
                 {
@@ -195,7 +196,7 @@ void updateBullets(Bullet bullets[], int max_bullets, Player *player, Enemy enem
 
             // 更新动画帧
             bullets[i].frameTimer++;
-            if (bullets[i].frameTimer >= bullets[i].animationSpeed) // 每3帧切换一次动画
+            if (bullets[i].frameTimer >= bullets[i].animationSpeed) // 每1帧切换一次动画
             {
                 bullets[i].frame = (bullets[i].frame + 1) % bullets[i].frameCount; // 假设动画有1帧
                 bullets[i].frameTimer = 0;
@@ -239,37 +240,6 @@ void updateBullets(Bullet bullets[], int max_bullets, Player *player, Enemy enem
         }
     }
 }
-
-
-void renderBullets(Bullet bullets[], int max_bullets, SDL_Renderer *renderer, SDL_Texture *bulletTexture)// ? :可以删去？
-{
-    SDL_Rect srcRect, destRect;
-
-    int frameWidth = 20; // 假设每帧宽度为20像素
-    int frameHeight = 20; // 假设每帧高度为20像素
-
-    for (int i = 0; i < max_bullets; i++)
-    {
-        if (bullets[i].active)
-        {
-            // 设置源矩形（从纹理中裁剪动画帧）
-            srcRect.x = bullets[i].frame * frameWidth;
-            srcRect.y = 0;
-            srcRect.w = frameWidth;
-            srcRect.h = frameHeight;
-
-            // 设置目标矩形（子弹在屏幕上的位置）
-            destRect.x = bullets[i].rect.x;
-            destRect.y = bullets[i].rect.y;
-            destRect.w = bullets[i].rect.w;
-            destRect.h = bullets[i].rect.h;
-
-            // 渲染当前帧
-            SDL_RenderCopy(renderer, bulletTexture, &srcRect, &destRect);
-        }
-    }
-}
-
 
 // 检测子弹是否与目标矩形碰撞
 bool checkBulletCollision(SDL_Rect *bulletRect, SDL_Rect *targetRect)

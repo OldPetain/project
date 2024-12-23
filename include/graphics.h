@@ -10,12 +10,12 @@
 bool initSDL();
 
 // 渲染内容
-void render(Player* player,Enemy enemies[]);
+void render(Player *player, Enemy enemies[], Bullet playerBullets[], Bullet enemyBullets[]);
 
 // 加载背景图片
 bool loadBackground(const char* imagePath);
 
 // 清理 SDL
-void closeSDL(Player* player);
+void closeSDL(Player *player);
 
 #endif

@@ -133,11 +133,57 @@ bool handleInput(Player *player, Enemy enemies[])
             }
         }
     }
-
+    // TODO:加入我之前判断地图边缘的逻辑
     // 玩家靠近左右地图边缘时，更新地图和敌人位置
-    if (player->rect.x < MAP_EDGE_WIDTH)
+    if (player->rect.x < MAP_EDGE_WIDTH)//靠近左边缘
     {
-        // TODO:加入我之前判断地图边缘的逻辑
+        if(SourceRect.x < 0){
+            SourceRect.x = 0;
+        }
+        if(player->dx < 0 && SourceRect.x > 0)//如果玩家在向左移动
+        {
+            player->dx = 0;//玩家停止移动
+            SourceRect.x -= player->speed;//移动地图
+            for(int i = 0; i < MAX_ENEMIES; i++){
+                if(enemies[i].active){
+                    enemies[i].rect.x += player->speed;
+                }
+            }//更新敌人位置
+            for(int i = 0; i < MAX_BULLETS; i++){
+                if(playerBullets[i].active){
+                    playerBullets[i].rect.x += player->speed;
+                }
+                if(enemyBullets[i].active){
+                    enemyBullets[i].rect.x += player->speed;
+                }
+            }//更新子弹位置
+        }
     }
+
+    if (player->rect.x + player->rect.w > SCREEN_WIDTH - MAP_EDGE_WIDTH)//靠近右边缘
+    {
+        if(SourceRect.x + SCREEN_WIDTH > MAP_WIDTH){
+            SourceRect.x = MAP_WIDTH - SCREEN_WIDTH;
+        }
+        if(player->dx > 0 && SourceRect.x + SCREEN_WIDTH < MAP_WIDTH)//如果玩家在向右移动
+        {
+            player->dx = 0;//玩家停止移动
+            SourceRect.x += player->speed;//移动地图
+            for(int i = 0; i < MAX_ENEMIES; i++){
+                if(enemies[i].active){
+                    enemies[i].rect.x -= player->speed;
+                }
+            }//更新敌人位置
+            for(int i = 0; i < MAX_BULLETS; i++){
+                if(playerBullets[i].active){
+                    playerBullets[i].rect.x -= player->speed;
+                }
+                if(enemyBullets[i].active){
+                    enemyBullets[i].rect.x -= player->speed;
+                }
+            }//更新子弹位置
+        }
+    }   
+        
     return true;
 }
