@@ -93,6 +93,9 @@ int main(int argc, char* argv[])
 
         // 渲染内容
         render(&player, enemies); //???
+        // 绘制子弹
+        renderBullets( playerBullets, MAX_BULLETS, renderer,playerBullets->texture);// !:有问题
+        renderBullets( enemyBullets, MAX_BULLETS, renderer,enemyBullets->texture);// !:有问题
 
         // 延迟
         end = SDL_GetTicks64();

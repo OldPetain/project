@@ -18,6 +18,9 @@ void fireEnemyBullet(Player* player, Bullet bullets[],Enemy enemies[],int i,int 
 // 更新子弹位置
 void updateBullets(Bullet bullets[], int max_bullets, Player* player, Enemy enemies[], int max_enemies);
 
+//渲染子弹
+void renderBullets(Bullet bullets[], int max_bullets, SDL_Renderer *renderer, SDL_Texture *bulletTexture);
+
 // 检测子弹是否碰撞目标
 bool checkBulletCollision(SDL_Rect* bulletRect, SDL_Rect* targetRect);
 

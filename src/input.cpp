@@ -9,6 +9,25 @@
 // 全局事件
 SDL_Event event;
 
+// 辅助函数：更新地图和敌人位置
+void updateMapAndEnemies(Player *player, Enemy enemies[], int speed, bool moveLeft)
+{
+    for (int i = 0; i < MAX_ENEMIES; i++)
+    {
+        enemies[i].rect.x += (moveLeft ? speed : -speed);
+    }
+}
+
+// 辅助函数：设置玩家状态
+void setPlayerState(Player *player, int direction, AnimationState state, int frameCount, int dx, int dy)
+{
+    player->direction = direction;
+    player->state = state;
+    player->frameCount = frameCount;
+    player->dx = dx;
+    player->dy = dy;
+}
+
 bool handleInput(Player *player, Enemy enemies[])
 {
     while (SDL_PollEvent(&event))
@@ -18,186 +37,107 @@ bool handleInput(Player *player, Enemy enemies[])
             // 退出事件
             return false;
         }
-        else if (event.type == SDL_KEYDOWN)
+    }
+
+    const Uint8 *keyState = SDL_GetKeyboardState(NULL);
+
+    // 跳跃逻辑
+    if (keyState[SDL_SCANCODE_SPACE] && !player->is_jumping)//如果按下空格键并且没有在跳跃中
+    {
+        player->jumping = true;
+        setPlayerState(
+            player,
+            (player->direction == 5 || player->direction == 6 || player->direction == 7) ? 6 : 2,
+            (player->direction == 5 || player->direction == 6 || player->direction == 7) ? JUMP_LEFT : JUMP_RIGHT,
+            4, 0, -player->speed);// ?
+        if (player->state == JUMP_LEFT && keyState[SDL_SCANCODE_A])
         {
-            // 按键按下
-            switch (event.key.keysym.scancode)
+            player->dx = -player->speed;
+        }
+        else if (player->state == JUMP_RIGHT && keyState[SDL_SCANCODE_D])
+        {
+            player->dx = player->speed;
+        }
+    }
+
+    // 射击逻辑
+    if (keyState[SDL_SCANCODE_J])
+    {
+        player->shooting = true;
+        //firePlayerBullet(player, playerBullets, MAX_BULLETS);
+    }
+    else
+    {
+        player->shooting = false;
+    }
+
+    // 移动逻辑
+    if (!player->jumping && !player->is_jumping)
+    {
+        if (keyState[SDL_SCANCODE_W] && keyState[SDL_SCANCODE_A])
+        {
+            setPlayerState(player, 7, WALK_LEFT, 5, -player->speed, 0);
+        }
+        else if (keyState[SDL_SCANCODE_W] && keyState[SDL_SCANCODE_D])
+        {
+            setPlayerState(player, 1, WALK_RIGHT, 5, player->speed, 0);
+        }
+        else if (keyState[SDL_SCANCODE_S] && keyState[SDL_SCANCODE_A])
+        {
+            setPlayerState(player, 5, LIE_DOWN_LEFT, 1, 0, 0);
+        }
+        else if (keyState[SDL_SCANCODE_S] && keyState[SDL_SCANCODE_D])
+        {
+            setPlayerState(player, 3, LIE_DOWN_RIGHT, 1, 0, 0);
+        }
+        else if (keyState[SDL_SCANCODE_A])
+        {
+            setPlayerState(player, 6, WALK_LEFT, 5, -player->speed, 0);
+        }
+        else if (keyState[SDL_SCANCODE_D])
+        {
+            setPlayerState(player, 2, WALK_RIGHT, 5, player->speed, 0);
+        }
+        else if (keyState[SDL_SCANCODE_S])
+        {
+            if (player->direction == 6 || player->state == WALK_LEFT || player->state == STAND_LEFT)
             {
-            case SDL_SCANCODE_W:
-                if (player->direction == 6)
-                {
-                    player->state = STAND_UP_LEFT;
-                }
-                else
-                {
-                    if (player->direction == 2)
-                    {
-                        player->state = STAND_UP_RIGHT;
-                    }
-                }
-                player->frameCount = 1; // 假设站立有1帧
-                player->direction = 0;  // 面向上
-                // player->dy = -player->speed;
-                break;
-            case SDL_SCANCODE_A:
-                player->direction = 6;     // 面向左
-                player->state = WALK_LEFT; // 设置为向左跑动状态
-                player->frameCount = 5;    // 假设跑动有5帧
-                if (player->rect.x > MAP_EDGE_WIDTH)
-                {
-                    player->dx = -player->speed;
-                }
-                else
-                {
-                    SourceRect.x -= player->speed;
-                    if (SourceRect.x < 0)
-                    {
-                        SourceRect.x = 0;
-                        // 如果靠近地图左边界，不移动地图，还是移动角色
-                        player->dx = -player->speed;
-                    }
-                    else
-                    {
-                        // 不移动角色，移动地图和敌人
-                        for (int i = 0; i < MAX_ENEMIES; i++)
-                        {                                               
-                            enemies[i].rect.x += player->speed;
-                        }
-                    }
-                }
-                break;
-            case SDL_SCANCODE_S:
-                // ! start
-                if (player->direction == 2)
-                {
-                    player->state = LIE_DOWN_RIGHT;
-                    player->frameCount = 1;
-                }
-                else if (player->direction == 6)
-                {
-                    player->state = LIE_DOWN_LEFT;
-                    player->frameCount = 1;
-                }
-                player->direction = 4; // 面向下
-                // ! End
-                // ! 日志：增加了LIE_DOWN_RIGHT、SHOOTING_RUN_LEFT、DIE等状态表示趴下、开枪同时移动、死亡
-                player -> dx = 0; // 停止移动
-                // player->dy = player->speed;
-                break;
-            case SDL_SCANCODE_D:
-                player->state = WALK_RIGHT; // 设置为向右跑动状态
-                player->direction = 2;      // 面向右
-                player->frameCount = 5;     // 假设跑动有5帧
-                if (player->rect.x + player->rect.w < SCREEN_WIDTH - MAP_EDGE_WIDTH)
-                {
-                    player->dx = player->speed;
-                }
-                else
-                {
-                    SourceRect.x += player->speed;       
-                    if (SourceRect.x + SCREEN_WIDTH > MAP_WIDTH)
-                    {
-                        // 如果靠近地图右边界，不移动地图，还是移动角色
-                        SourceRect.x = MAP_WIDTH - SCREEN_WIDTH;
-                        player->dx = player->speed;
-                    }
-                    else
-                    {
-                        // 不移动角色，移动地图和敌人
-                        for (int i = 0; i < MAX_ENEMIES; i++)
-                        {
-                            enemies[i].rect.x -= player->speed;//死的和活的敌人都要移动，活的使它与地图同步，死的固定在复活的位置
-                        }                        
-                    }
-                }
-                break;
-            case SDL_SCANCODE_SPACE:
-                // 如果角色处于跳跃状态，则取消跳跃
-                if (player->is_jumping == false){
-                    player->jumping = true; //???
-                    if(player->state == STAND_LEFT || player->state == WALK_LEFT)
-                    {
-                        player->direction = 6;
-                        player->state = JUMP_LEFT;
-                        player->frameCount = 4;
-                    }
-                    if(player->state == STAND_RIGHT || player->state == WALK_RIGHT)
-                    {
-                        player->direction = 2;
-                        player->state = JUMP_RIGHT;
-                        player->frameCount = 4;
-                    }
-                }                
-                break;
-            case SDL_SCANCODE_J:
-                player->shooting = true;
-                firePlayerBullet(player, playerBullets, MAX_BULLETS); //???
-                break;
-            default:
-                break;
+                setPlayerState(player, 4, LIE_DOWN_LEFT, 1, 0, 0); // 趴下左
+            }
+            else if (player->direction == 2 || player->state == WALK_RIGHT || player->state == STAND_RIGHT)
+            {
+                setPlayerState(player, 4, LIE_DOWN_RIGHT, 1, 0, 0); // 趴下右
             }
         }
-        else if (event.type == SDL_KEYUP)
+        else if (keyState[SDL_SCANCODE_W])
         {
-            // 按键释放
-            switch (event.key.keysym.scancode)
+            if (player->direction == 6 || player->state == WALK_LEFT || player->state == STAND_LEFT)
             {
-            case SDL_SCANCODE_W:
-                if (player->state == STAND_UP_LEFT)
-                {
-                    player->direction = 6;      // 面向左
-                    player->state = STAND_LEFT; // 面向左
-                    player->frameCount = 1;     // 假设站立有1帧
-                }
-
-                if (player->state == STAND_UP_RIGHT)
-                {
-                    player->direction = 2;       // 面向右
-                    player->state = STAND_RIGHT; // 面向右
-                    player->frameCount = 1;      // 假设站立有1帧
-                }
-                player->dy = 0; //???
-                break;
-            case SDL_SCANCODE_S:                
-                // ! start
-                if (player->state == LIE_DOWN_LEFT)
-                {
-                    player->state = STAND_LEFT;
-                    player->direction = 6;
-                    player->frameCount = 1;
-                }
-
-                if (player->state == LIE_DOWN_RIGHT)
-                {
-                    player->state = STAND_RIGHT;
-                    player->direction = 2;
-                    player->frameCount = 1;
-                }
-                // ! End
-                // !日志：抬起s时，角色状态更新为站立
-                player->dy = 0; // ???
-                break;
-            case SDL_SCANCODE_A:
-                player->state = STAND_LEFT; // 面向左
-                player->frame = 0;          // 重置动画帧索引
-                player->frameCount = 1;     // 假设站立有1帧
-                player->dx = 0;
-                break;
-            case SDL_SCANCODE_D:
-                player->state = STAND_RIGHT; // 面向右
-                player->frame = 0;           // 重置动画帧索引
-                player->frameCount = 1;      // 假设站立有1帧
-                player->dx = 0;
-                break;
-            case SDL_SCANCODE_SPACE:                
-                break;
-            case SDL_SCANCODE_J:
-                player->shooting = false; //???
-                break;
-            default:
-                break;
+                setPlayerState(player, 0, STAND_UP_LEFT, 1, 0, 0); // 面向左，向上举枪
+            }
+            else if (player->direction == 2 || player->state == WALK_RIGHT || player->state == STAND_RIGHT)
+            {
+                setPlayerState(player, 0, STAND_UP_RIGHT, 1, 0, 0); // 面向右，向上举枪
             }
         }
+        else
+        {
+            // 无按键按下，根据最后方向停止
+            if (player->direction == 6 || player->state == WALK_LEFT || player->state == LIE_DOWN_LEFT || player->state == STAND_UP_LEFT)
+            {
+                setPlayerState(player, 6, STAND_LEFT, 1, 0, 0); // 面向左停止
+            }
+            else if (player->direction == 2 || player->state == WALK_RIGHT || player->state == LIE_DOWN_RIGHT || player->state == STAND_UP_RIGHT)
+            {
+                setPlayerState(player, 2, STAND_RIGHT, 1, 0, 0); // 面向右停止
+            }
+        }
+    }
+
+    // 玩家靠近左右地图边缘时，更新地图和敌人位置
+    if (player->rect.x < MAP_EDGE_WIDTH)
+    {
+        // TODO:加入我之前判断地图边缘的逻辑
     }
     return true;
 }

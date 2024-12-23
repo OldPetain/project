@@ -89,6 +89,8 @@ void render(Player* player, Enemy enemies[]){
     }
 
     // 绘制子弹(黄色)
+    // TODO ：优化子弹绘制
+    /*
     SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255); // 子弹颜色：黄色
     for (int i = 0; i < MAX_BULLETS; i++) {
         if (playerBullets[i].active) {
@@ -98,7 +100,8 @@ void render(Player* player, Enemy enemies[]){
             SDL_RenderFillRect(renderer, &enemyBullets[i].rect);
         }
     }
-
+    */
+   
     // 显示渲染内容
     SDL_RenderPresent(renderer);
 }

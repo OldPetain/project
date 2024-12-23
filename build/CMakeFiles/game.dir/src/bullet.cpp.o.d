@@ -232,4 +232,5 @@ CMakeFiles/game.dir/src/bullet.cpp.o: \
  /usr/lib/gcc/x86_64-linux-gnu/13/include/stdbool.h \
  /home/dhys/SDL/project/src/../include/player.h \
  /home/dhys/SDL/project/src/../include/enemy.h \
- /home/dhys/SDL/project/src/../include/common.h
+ /home/dhys/SDL/project/src/../include/common.h \
+ /usr/include/SDL2/SDL_image.h /usr/include/SDL2/SDL.h

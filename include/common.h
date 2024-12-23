@@ -69,6 +69,11 @@ typedef struct
     int dx, dy;    // 子弹速度
     bool active;   // 子弹是否激活
     int source;    // 子弹来源（玩家或敌人）
+    int frame;            // 当前动画帧索引
+    int frameCount;       // 当前动作的总帧数
+    int animationSpeed; // 动画切换速度（帧计数）
+    int frameTimer;      // 帧计时器
+    SDL_Texture *texture; // 精灵图纹理
 } Bullet;
 
 // 声明全局变量

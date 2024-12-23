@@ -24,6 +24,7 @@ CMakeFiles/game.dir/src/bullet.cpp.o: /home/dhys/SDL/project/src/bullet.cpp \
   /usr/include/SDL2/SDL_haptic.h \
   /usr/include/SDL2/SDL_hidapi.h \
   /usr/include/SDL2/SDL_hints.h \
+  /usr/include/SDL2/SDL_image.h \
   /usr/include/SDL2/SDL_joystick.h \
   /usr/include/SDL2/SDL_keyboard.h \
   /usr/include/SDL2/SDL_keycode.h \
@@ -1657,8 +1658,6 @@ CMakeFiles/game.dir/src/player.cpp.o: /home/dhys/SDL/project/src/player.cpp \
 
 /home/dhys/SDL/project/src/input.cpp:
 
-/usr/include/SDL2/SDL_image.h:
-
 /home/dhys/SDL/project/src/enemy.cpp:
 
 /usr/lib/gcc/x86_64-linux-gnu/13/include/xtestintrin.h:
@@ -1682,6 +1681,8 @@ CMakeFiles/game.dir/src/player.cpp.o: /home/dhys/SDL/project/src/player.cpp \
 /usr/lib/gcc/x86_64-linux-gnu/13/include/tmmintrin.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/13/include/tbmintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h:
 
 /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h:
 
@@ -1793,9 +1794,11 @@ CMakeFiles/game.dir/src/player.cpp.o: /home/dhys/SDL/project/src/player.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/libc-header-start.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/13/include/avx512fp16vlintrin.h:
+/usr/include/x86_64-linux-gnu/bits/stdint-intn.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/13/include/avx512vldqintrin.h:
+/usr/lib/gcc/x86_64-linux-gnu/13/include/fxsrintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/13/include/raointintrin.h:
 
 /usr/include/SDL2/SDL_messagebox.h:
 
@@ -1883,9 +1886,9 @@ CMakeFiles/game.dir/src/player.cpp.o: /home/dhys/SDL/project/src/player.cpp \
 
 /usr/include/SDL2/SDL_error.h:
 
-/usr/include/SDL2/SDL_pixels.h:
+/usr/include/SDL2/SDL_image.h:
 
-/home/dhys/SDL/project/include/enemy.h:
+/usr/include/alloca.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/13/include/avxneconvertintrin.h:
 
@@ -1911,6 +1914,10 @@ CMakeFiles/game.dir/src/player.cpp.o: /home/dhys/SDL/project/src/player.cpp \
 
 /usr/include/x86_64-linux-gnu/sys/types.h:
 
+/usr/include/SDL2/SDL_pixels.h:
+
+/home/dhys/SDL/project/include/enemy.h:
+
 /usr/include/c++/13/pstl/pstl_config.h:
 
 /usr/include/x86_64-linux-gnu/bits/wordsize.h:
@@ -1927,11 +1934,9 @@ CMakeFiles/game.dir/src/player.cpp.o: /home/dhys/SDL/project/src/player.cpp \
 
 /usr/include/SDL2/SDL_audio.h:
 
-/usr/include/x86_64-linux-gnu/bits/stdint-intn.h:
+/usr/lib/gcc/x86_64-linux-gnu/13/include/avx512fp16vlintrin.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/13/include/fxsrintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/13/include/raointintrin.h:
+/usr/lib/gcc/x86_64-linux-gnu/13/include/avx512vldqintrin.h:
 
 /usr/include/x86_64-linux-gnu/bits/iscanonical.h:
 
@@ -1990,8 +1995,6 @@ CMakeFiles/game.dir/src/player.cpp.o: /home/dhys/SDL/project/src/player.cpp \
 /usr/include/SDL2/SDL_log.h:
 
 /home/dhys/SDL/project/include/player.h:
-
-/usr/include/alloca.h:
 
 /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
 
@@ -2212,5 +2215,3 @@ CMakeFiles/game.dir/src/player.cpp.o: /home/dhys/SDL/project/src/player.cpp \
 /usr/lib/gcc/x86_64-linux-gnu/13/include/smmintrin.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h:
