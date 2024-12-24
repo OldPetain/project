@@ -18,7 +18,7 @@ void initEnemies(Enemy enemies[])
     for (int i = 0; i < MAX_ENEMIES; i++)
     {
         enemies[i].rect.x = 800 + i * 100;
-        enemies[i].rect.y = 100 + i * 50;
+        enemies[i].rect.y = SCREEN_HEIGHT / 2 - 115;
         enemies[i].rect.w = 115;
         enemies[i].rect.h = 115;
         enemies[i].dx = -2;
@@ -26,7 +26,7 @@ void initEnemies(Enemy enemies[])
         enemies[i].active = false;
         enemies[i].direction = 0;    // 敌人方向为0，向左
         enemies[i].dying = false;    // 敌人初始化，还没有死亡
-        enemies[i].deathTimer = 300; // 死亡动画计时器
+        enemies[i].deathTimer = 10; // 死亡动画计时器
 
         enemies[i].texture = enemies_texture; // 敌人图片
         enemies[i].state = enemy_state::RUN_LEFT;
@@ -46,26 +46,12 @@ void updateEnemies(Enemy enemies[], Player *player, Bullet bullets[], int max_bu
 {
     for (int i = 0; i < MAX_ENEMIES; i++)
     {
-        enemies[i].frame_timer++;
-        if (enemies[i].frame_timer >= enemies[i].animation_speed)
-        {
-            // std::cout << "update***enemy* before " << i << " current_frame:" << enemies[i].current_frame << std::endl; // test
-            // std::cout << "update***enemy* before " << i << " all frame:" << enemies[i].frame_count << std::endl;       // test
-
-            // 这里没有问题！
-            enemies[i].current_frame = (enemies[i].current_frame + 1) % enemies[i].frame_count;
-            enemies[i].frame_timer = 0;
-
-            // std::cout << "update***enemy* after" << i << " current_frame:" << enemies[i].current_frame << std::endl; // test
-        }
-
-        if (enemies[i].rect.x <= SCREEN_WIDTH && enemies[i].rect.x >= 0)
+        if (enemies[i].rect.x <= SCREEN_WIDTH && enemies[i].rect.x + enemies[i].rect.w >= 0)
         { // 如果敌人已经部分进入屏幕，则开始活动
             enemies[i].active = true;
         }
         if (enemies[i].active)
         {
-
             if (enemies[i].dying)
             {
                 enemies[i].state = enemy_state::ENEMY_DIE;
@@ -74,12 +60,32 @@ void updateEnemies(Enemy enemies[], Player *player, Bullet bullets[], int max_bu
                 enemies[i].deathTimer--;
                 if (enemies[i].deathTimer <= 0)
                 {
-                    enemies[i].active = false; // 敌人彻底消失
-                    enemies[i].dying = false;  // 敌人死亡状态复位
+                    enemies[i].active = false;    // 敌人彻底消失
+                    enemies[i].dying = false;     // 敌人死亡状态复位
+                    enemies[i].frame_count = 4;   // 敌人复原状态
+                    enemies[i].current_frame = 0; // 敌人复原帧数
+                    enemies[i].frame_timer = 0;   // 敌人复原帧数计时器
+                    enemies[i].direction = 0;     // 敌人复原方向                    
+                    enemies[i].state = RUN_LEFT;  // 敌人复原状态
+                    enemies[i].dx = -2;           // 敌人复原速度
+                    enemies[i].dy = 0;
+                    enemies[i].deathTimer = 10; // 死亡动画计时器
                 }
             }
             else
             {
+                enemies[i].frame_timer++;
+                if (enemies[i].frame_timer >= enemies[i].animation_speed)
+                {
+                    // std::cout << "update***enemy* before " << i << " current_frame:" << enemies[i].current_frame << std::endl; // test
+                    // std::cout << "update***enemy* before " << i << " all frame:" << enemies[i].frame_count << std::endl;       // test
+
+                    // 这里没有问题！
+                    enemies[i].current_frame = (enemies[i].current_frame + 1) % enemies[i].frame_count;
+                    enemies[i].frame_timer = 0;
+
+                    // std::cout << "update***enemy* after" << i << " current_frame:" << enemies[i].current_frame << std::endl; // test
+                }
                 if (rand() % 100 < 5)
                 { // 随机发射子弹
                     fireEnemyBullet(player, bullets, enemies, i, max_bullets);

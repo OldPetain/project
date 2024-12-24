@@ -5,8 +5,8 @@
 void initPlayer(SDL_Renderer *renderer, Player *player)
 {
     // 初始化玩家矩形和生命值
-    player->rect.x = SCREEN_WIDTH / 2 - 100;
-    player->rect.y = SCREEN_HEIGHT / 2 - 60;
+    player->rect.x = SCREEN_WIDTH / 2 - 125;
+    player->rect.y = SCREEN_HEIGHT / 2 - 125;
     player->rect.w = 125;
     player->rect.h = 125;
     player->lives = 30;

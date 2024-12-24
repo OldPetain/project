@@ -49,7 +49,7 @@ bool handleInput(Player *player, Enemy enemies[])
             player,
             (player->direction == 5 || player->direction == 6 || player->direction == 7) ? 6 : 2,
             (player->direction == 5 || player->direction == 6 || player->direction == 7) ? JUMP_LEFT : JUMP_RIGHT,
-            4, 0, -player->speed); // ?
+            4, 0, -player->speed);
         if (player->state == JUMP_LEFT && keyState[SDL_SCANCODE_A])
         {
             player->dx = -player->speed;
@@ -145,9 +145,7 @@ bool handleInput(Player *player, Enemy enemies[])
             player->dx = 0;//玩家停止移动
             SourceRect.x -= player->speed;//移动地图
             for(int i = 0; i < MAX_ENEMIES; i++){
-                if(enemies[i].active){
                     enemies[i].rect.x += player->speed;
-                }
             }//更新敌人位置
             for(int i = 0; i < MAX_BULLETS; i++){
                 if(playerBullets[i].active){
@@ -169,10 +167,8 @@ bool handleInput(Player *player, Enemy enemies[])
         {
             player->dx = 0;//玩家停止移动
             SourceRect.x += player->speed;//移动地图
-            for(int i = 0; i < MAX_ENEMIES; i++){
-                if(enemies[i].active){
+            for(int i = 0; i < MAX_ENEMIES; i++){               
                     enemies[i].rect.x -= player->speed;
-                }
             }//更新敌人位置
             for(int i = 0; i < MAX_BULLETS; i++){
                 if(playerBullets[i].active){

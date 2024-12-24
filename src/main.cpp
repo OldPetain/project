@@ -62,35 +62,10 @@ int main(int argc, char *argv[])
             }
         }
 
-        // 检测子弹碰撞
-        // 玩家子弹打中敌人
-        for (int i = 0; i < MAX_BULLETS; i++)
-        {
-            if (playerBullets[i].active)
-            {
-                for (int j = 0; j < MAX_ENEMIES; j++)
-                {
-                    if (enemies[j].active && checkBulletCollision(&playerBullets[i].rect, &enemies[j].rect))
-                    {
-                        playerBullets[i].active = false;
-                        // enemies[j].active = false; // 击中敌人后消失
-                        enemies[j].dying = true; // ! 开始倒计时,马上就死咯
-                    }
-                }
-            }
-        }
-        // 敌人子弹打中玩家
-        for (int i = 0; i < MAX_BULLETS; i++)
-        {
-            if (enemyBullets[i].active && checkBulletCollision(&enemyBullets[i].rect, &player.rect))
-            {
-                enemyBullets[i].active = false;
-                player.lives--; // 玩家生命减少
-                if (player.lives <= 0)
-                {
-                    running = false; // 游戏结束
-                }
-            }
+        //胜利条件
+        if(SourceRect.x + player.rect.x + player.rect.w >= 11300){
+            printf("You Win!\n");
+            running = false;
         }
 
         // 渲染内容

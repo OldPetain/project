@@ -1,3 +1,3 @@
-/home/sun/code/contra/build/CMakeFiles/game.dir
-/home/sun/code/contra/build/CMakeFiles/edit_cache.dir
-/home/sun/code/contra/build/CMakeFiles/rebuild_cache.dir
+/home/dhys/SDL/project/build/CMakeFiles/game.dir
+/home/dhys/SDL/project/build/CMakeFiles/edit_cache.dir
+/home/dhys/SDL/project/build/CMakeFiles/rebuild_cache.dir

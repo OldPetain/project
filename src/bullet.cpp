@@ -12,7 +12,6 @@ void initBullets(Bullet bullets[])
     for (int i = 0; i < MAX_BULLETS; i++)
     {
         bullets[i].active = false;          // 所有子弹初始未激活
-        bullets[i].source = -1;            // 子弹来源未知
         bullets[i].dy = 0;                  // 子弹的速度
         bullets[i].dx = 0;                  // 子弹的速度
         bullets[i].rect.w = 20;             // 子弹的宽
@@ -219,9 +218,9 @@ void updateBullets(Bullet bullets[], int max_bullets, Player *player, Enemy enem
                     {
                         bullets[i].active = false;                        // 子弹消失
                         enemies[j].dying = true;                          // 标记敌人正在消失
-                        enemies[j].deathTimer = 300;                      // 计时器，30帧后敌人消失
-                        enemies[j].rect.x = SCREEN_WIDTH + (j + 1) * 200; // 在屏幕外预设敌人位置(x轴)
-                        enemies[j].rect.y = SCREEN_HEIGHT * (j + 1) / 10; // 在屏幕外预设敌人位置(y轴)
+                        enemies[j].deathTimer = 10;                      // 计时器，30帧后敌人消失
+                        enemies[j].rect.x = SCREEN_WIDTH + (j + 1) * 250; // 在屏幕外预设敌人位置(x轴)
+                        enemies[j].rect.y = SCREEN_HEIGHT / 2 - 115; // 在屏幕外预设敌人位置(y轴)
                         enemies[j].dx = 0;
                         enemies[j].dy = 0;
                         break;

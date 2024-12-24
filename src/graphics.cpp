@@ -65,7 +65,7 @@ bool initSDL()
     }
 
     // 加载背景
-    if  (!loadBackground("../assets/map01.bmp"))
+    if  (!loadBackground("../assets/map.png"))
     
     {
         return false;
